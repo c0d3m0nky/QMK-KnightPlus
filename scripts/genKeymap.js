@@ -56,31 +56,33 @@ let colorMap = {
     KC_VOLD: 'KRGB_MEDIA',
     KC_VOLU: 'KRGB_MEDIA',
     KC_MUTE: 'KRGB_MEDIA',
-    0: {
+    kb: {
         0: {
-            5: 'KRGB_DEV2',
-            9: 'KRGB_DEV1',
-            10: 'KRGB_DEV2',
-            11: 'KRGB_DEV2'
-        },
-        2: {
-            14: 'KRGB_MISNAMED'
-        },
-        3: {
-            0: 'KRGB_MISNAMED',
-            1: 'KRGB_HOME',
-            2: 'KRGB_HOME',
-            3: 'KRGB_HOME',
-            4: 'KRGB_HOME',
-            8: 'KRGB_HOME',
-            9: 'KRGB_HOME',
-            10: 'KRGB_HOME',
-            11: 'KRGB_HOME',
-            14: 'KRGB_MISNAMED'
-        },
-        5: {
-            0: 'KRGB_PORTAL1',
-            9: 'KRGB_PORTAL2'
+            0: {
+                5: 'KRGB_DEV2',
+                9: 'KRGB_DEV1',
+                10: 'KRGB_DEV2',
+                11: 'KRGB_DEV2'
+            },
+            2: {
+                14: 'KRGB_MISNAMED'
+            },
+            3: {
+                0: 'KRGB_MISNAMED',
+                1: 'KRGB_HOME',
+                2: 'KRGB_HOME',
+                3: 'KRGB_HOME',
+                4: 'KRGB_HOME',
+                8: 'KRGB_HOME',
+                9: 'KRGB_HOME',
+                10: 'KRGB_HOME',
+                11: 'KRGB_HOME',
+                14: 'KRGB_MISNAMED'
+            },
+            5: {
+                0: 'KRGB_PORTAL1',
+                9: 'KRGB_PORTAL2'
+            }
         }
     }
 }
@@ -89,6 +91,7 @@ function generate(template, keymap) {
     if (!module.exports.loaded) throw 'Templates not loaded';
 
     let dev = templates[template];
+    let pinColorMap = colorMap[template] || {};
     let tmpl = dev.template;
     let layers = '';
     let rgbLayers = '';
@@ -114,7 +117,7 @@ function generate(template, keymap) {
 
                 if (kc.startsWith('MO(')) rgbLayerRow.push('KRGB_FN');
                 else if (colorMap[kc]) rgbLayerRow.push(colorMap[kc]);
-                else if (colorMap[li] && colorMap[li][ri] && colorMap[li][ri][ci]) rgbLayerRow.push(colorMap[li][ri][ci]);
+                else if (pinColorMap[li] && pinColorMap[li][ri] && pinColorMap[li][ri][ci]) rgbLayerRow.push(pinColorMap[li][ri][ci]);
                 else rgbLayerRow.push('KRGB_DEF');
 
                 kci++;

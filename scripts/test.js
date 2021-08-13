@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-let dev = 'kb';
+let dev = 'np';
 
 let tmpl = require('./genKeymap.js');
 let km = require(`../${dev}-base.json`);
