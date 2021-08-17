@@ -52,6 +52,7 @@ let colorMap = {
     KC_NO: 'KRGB_OFF',
     RESET: 'KRGB_DANGER',
     EEP_RST: 'KRGB_DANGER',
+    DEBUG: 'KRGB_DEV2',
     RGB_VAI: 'KRGB_VAL',
     RGB_VAD: 'KRGB_VAL',
     KC_MPLY: 'KRGB_MEDIA',
@@ -65,11 +66,10 @@ let colorMap = {
                 5: 'KRGB_DEV2',
                 9: 'KRGB_DEV1',
                 10: 'KRGB_DEV2',
-                11: 'KRGB_DEV2'
-            },
-            2: {
+                11: 'KRGB_DEV2',
                 14: 'KRGB_MISNAMED'
             },
+            2: { 14: 'KRGB_MISNAMED' },
             3: {
                 0: 'KRGB_MISNAMED',
                 1: 'KRGB_HOME',
