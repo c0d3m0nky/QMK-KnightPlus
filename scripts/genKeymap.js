@@ -42,6 +42,8 @@ function getKeyCode(keymap, li, kci) {
         kc = keymap.layers[lio][kci];
     }
 
+    if (kc.startsWith('ANY(')) kc = kc.replace(/any\(([^)]+)\)/gi,'$1');
+
     return kc;
 }
 
@@ -50,12 +52,13 @@ let colorMap = {
     KC_NO: 'KRGB_OFF',
     RESET: 'KRGB_DANGER',
     EEP_RST: 'KRGB_DANGER',
-    RGB_VAI: 'KRGB_WHITE',
-    RGB_VAD: 'KRGB_WHITE',
+    RGB_VAI: 'KRGB_VAL',
+    RGB_VAD: 'KRGB_VAL',
     KC_MPLY: 'KRGB_MEDIA',
     KC_VOLD: 'KRGB_MEDIA',
     KC_VOLU: 'KRGB_MEDIA',
     KC_MUTE: 'KRGB_MEDIA',
+    M_LAMBDA: 'KRGB_DEV2',
     kb: {
         0: {
             0: {
@@ -93,6 +96,7 @@ function generate(template, keymap) {
     let dev = templates[template];
     let pinColorMap = colorMap[template] || {};
     let tmpl = dev.template;
+    let rgbSeq = [];
     let layers = '';
     let rgbLayers = '';
 
@@ -125,6 +129,9 @@ function generate(template, keymap) {
             layer.push(layerRow);
             rgbLayer.push(rgbLayerRow);
         }
+
+        rgbSeq.push(toSeq(rgbLayer));
+
         let tabbed = toTabbedStr(dev, layer);
         let rgbTabbed = toTabbedStr(dev, rgbLayer);
         let layerStr = `[${li}] = LAYOUT(`;
@@ -145,7 +152,27 @@ function generate(template, keymap) {
     tmpl = tmpl.replace('%Layers%', dropLastChar(layers));
     tmpl = tmpl.replace('%RgbLayers%', dropLastChar(rgbLayers));
 
-    return tmpl;
+    return { template: tmpl, sequence: rgbSeq };
+}
+
+function toSeq(layer) {
+    let seq = [];
+    let prevVal = null;
+
+    for (let ri = 0; ri < layer.length; ri++) {
+        let row = layer[ri];
+
+        for (let ci = 0; ci < row.length; ci++) {
+            let val = row[ci];
+
+            if (prevVal != val) {
+                prevVal = val;
+                seq.push([ri, ci, val]);
+            }
+        }
+    }
+
+    return seq;
 }
 
 function toTabbedStr(dev, arr) {
